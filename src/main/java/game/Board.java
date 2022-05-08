@@ -4,13 +4,13 @@ import java.util.Map;
 import java.util.HashMap;
 
 final class Board {
+
     long pawns;
     long knights;
     long bishops;
     long rooks;
     long queens;
     long kings;
-
     long white;
     long black;
     long occupied;
