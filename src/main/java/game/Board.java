@@ -81,11 +81,11 @@ final class Board {
         this.incrementalHash = ZobristHash.hashPieces(this) ^ ZobristHash.hashTurn(this);
     }
 
-    private boolean isOccupied(int square) {
+    public boolean isOccupied(int square) {
         return Bitboard.contains(this.occupied, square);
     }
 
-    private void discard(int square) {
+    public void discard(int square) {
         if (!isOccupied(square)) return;
         Role role = roleAt(square);
         long mask = 1L << square;
@@ -107,7 +107,7 @@ final class Board {
         this.incrementalHash ^= ZobristHash.hashPiece(square, color, role);
     }
 
-    private void put(int square, boolean color, Role role) {
+    public void put(int square, boolean color, Role role) {
         discard(square);
 
         long mask = 1L << square;
@@ -221,11 +221,11 @@ final class Board {
         return white ? this.white : this.black;
     }
 
-    private int king(boolean white) {
+    public int king(boolean white) {
         return Bitboard.lsb(this.kings & byColor(white));
     }
 
-    private long sliderBlockers(int king) {
+    public long sliderBlockers(int king) {
         long snipers = them() & (
             Bitboard.rookAttacks(king, 0) & (this.rooks ^ this.queens) |
             Bitboard.bishopAttacks(king, 0) & (this.bishops ^ this.queens));
@@ -246,11 +246,11 @@ final class Board {
         return attacksTo(king(this.turn), !this.turn) != 0;
     }
 
-    private long attacksTo(int sq, boolean attacker) {
+    public long attacksTo(int sq, boolean attacker) {
         return attacksTo(sq, attacker, this.occupied);
     }
 
-    private long attacksTo(int sq, boolean attacker, long occupied) {
+    public long attacksTo(int sq, boolean attacker, long occupied) {
         return byColor(attacker) & (
             Bitboard.rookAttacks(sq, occupied) & (this.rooks ^ this.queens) |
             Bitboard.bishopAttacks(sq, occupied) & (this.bishops ^ this.queens) |
@@ -297,7 +297,7 @@ final class Board {
         return moves.anyMatch(m -> isSafe(king, m, blockers));
     }
 
-    private void genNonKing(long mask, MoveList moves) {
+    public void genNonKing(long mask, MoveList moves) {
         genPawn(mask, moves);
 
         // Knights.
@@ -353,7 +353,7 @@ final class Board {
         }
     }
 
-    private void genSafeKing(int king, long mask, MoveList moves) {
+    public void genSafeKing(int king, long mask, MoveList moves) {
         long targets = Bitboard.KING_ATTACKS[king] & mask;
         while (targets != 0) {
             int to = Bitboard.lsb(targets);
@@ -364,7 +364,7 @@ final class Board {
         }
     }
 
-    private void genEvasions(int king, long checkers, MoveList moves) {
+    public void genEvasions(int king, long checkers, MoveList moves) {
         // Checks by these sliding pieces can maybe be blocked.
         long sliders = checkers & (this.bishops ^ this.rooks ^ this.queens);
 
@@ -385,7 +385,7 @@ final class Board {
         }
     }
 
-    private void genPawn(long mask, MoveList moves) {
+    public void genPawn(long mask, MoveList moves) {
         // Pawn captures (except en passant).
         long capturers = us() & this.pawns;
         while (capturers != 0) {
@@ -428,7 +428,7 @@ final class Board {
         }
     }
 
-    private void addPawnMoves(int from, boolean capture, int to, MoveList moves) {
+    public void addPawnMoves(int from, boolean capture, int to, MoveList moves) {
         if (Square.rank(to) == (this.turn ? 7 : 0)) {
             moves.pushPromotion(this, from, capture, to, Role.QUEEN);
             moves.pushPromotion(this, from, capture, to, Role.KNIGHT);
@@ -439,7 +439,7 @@ final class Board {
         }
     }
 
-    private void genEnPassant(MoveList moves) {
+    public void genEnPassant(MoveList moves) {
         long pawns = us() & this.pawns & Bitboard.pawnAttacks(!this.turn, this.epSquare);
         while (pawns != 0) {
             int pawn = Bitboard.lsb(pawns);
@@ -448,7 +448,7 @@ final class Board {
         }
     }
 
-    private void genCastling(int king, MoveList moves) {
+    public void genCastling(int king, MoveList moves) {
         long rooks = this.castlingRights & Bitboard.RANKS[this.turn ? 0 : 7];
         while (rooks != 0) {
             int rook = Bitboard.lsb(rooks);
@@ -471,7 +471,7 @@ final class Board {
 
     // Used for filtering candidate moves that would leave/put the king
     // in check.
-    private boolean isSafe(int king, Move move, long blockers) {
+    public boolean isSafe(int king, Move move, long blockers) {
         switch (move.type) {
             case Move.NORMAL:
                 return
