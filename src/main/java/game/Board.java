@@ -299,32 +299,27 @@ public final class Board {
 
     public void genNonKing(long mask, MoveList moves) {
         genPawn(mask, moves);
+        genKnight(mask, moves);
+        genBishop(mask, moves);
+        genRook(mask, moves);
+        genQueens(mask, moves);
+    }
 
-        // Knights.
-        long knights = us() & this.knights;
-        while (knights != 0) {
-            int from = Bitboard.lsb(knights);
-            long targets = Bitboard.KNIGHT_ATTACKS[from] & mask;
+    public void genQueens(long mask, MoveList moves) {
+        // Queens.
+        long queens = us() & this.queens;
+        while (queens != 0) {
+            int from = Bitboard.lsb(queens);
+            long targets = Bitboard.queenAttacks(from, this.occupied) & mask;
             while (targets != 0) {
                 int to = Bitboard.lsb(targets);
-                moves.pushNormal(this, Role.KNIGHT, from, isOccupied(to), to);
+                moves.pushNormal(this, Role.QUEEN, from, isOccupied(to), to);
                 targets &= targets - 1L;
             }
-            knights &= knights - 1L;
+            queens &= queens - 1L;
         }
-
-        // Bishops.
-        long bishops = us() & this.bishops;
-        while (bishops != 0) {
-            int from = Bitboard.lsb(bishops);
-            long targets = Bitboard.bishopAttacks(from, this.occupied) & mask;
-            while (targets != 0) {
-                int to = Bitboard.lsb(targets);
-                moves.pushNormal(this, Role.BISHOP, from, isOccupied(to), to);
-                targets &= targets - 1L;
-            }
-            bishops &= bishops - 1L;
-        }
+    }
+    public void genRook(long mask, MoveList moves) {
 
         // Rooks.
         long rooks = us() & this.rooks;
@@ -338,18 +333,35 @@ public final class Board {
             }
             rooks &= rooks - 1L;
         }
+    }
 
-        // Queens.
-        long queens = us() & this.queens;
-        while (queens != 0) {
-            int from = Bitboard.lsb(queens);
-            long targets = Bitboard.queenAttacks(from, this.occupied) & mask;
+    public void genBishop(long mask, MoveList moves) {
+        // Bishops.
+        long bishops = us() & this.bishops;
+        while (bishops != 0) {
+            int from = Bitboard.lsb(bishops);
+            long targets = Bitboard.bishopAttacks(from, this.occupied) & mask;
             while (targets != 0) {
                 int to = Bitboard.lsb(targets);
-                moves.pushNormal(this, Role.QUEEN, from, isOccupied(to), to);
+                moves.pushNormal(this, Role.BISHOP, from, isOccupied(to), to);
                 targets &= targets - 1L;
             }
-            queens &= queens - 1L;
+            bishops &= bishops - 1L;
+        }
+    }
+
+    public void genKnight(long mask, MoveList moves) {
+        // Knights.
+        long knights = us() & this.knights;
+        while (knights != 0) {
+            int from = Bitboard.lsb(knights);
+            long targets = Bitboard.KNIGHT_ATTACKS[from] & mask;
+            while (targets != 0) {
+                int to = Bitboard.lsb(targets);
+                moves.pushNormal(this, Role.KNIGHT, from, isOccupied(to), to);
+                targets &= targets - 1L;
+            }
+            knights &= knights - 1L;
         }
     }
 
