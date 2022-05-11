@@ -3,23 +3,23 @@ package org.lichess.compression.game;
 import java.util.Map;
 import java.util.HashMap;
 
-final class Board {
+public final class Board {
 
-    long pawns;
-    long knights;
-    long bishops;
-    long rooks;
-    long queens;
-    long kings;
-    long white;
-    long black;
-    long occupied;
+    public long pawns;
+    public long knights;
+    public long bishops;
+    public long rooks;
+    public long queens;
+    public long kings;
+    public long white;
+    public long black;
+    public long occupied;
 
-    boolean turn;
-    int epSquare;
-    long castlingRights;
+    public boolean turn;
+    public int epSquare;
+    public long castlingRights;
 
-    int incrementalHash;
+    public int incrementalHash;
 
     public Board() {
         this.pawns = 0xff00000000ff00L;
@@ -59,7 +59,7 @@ final class Board {
         this.incrementalHash = ZobristHash.hashPieces(this) ^ ZobristHash.hashTurn(this);
     }
 
-    Board(long pawns, long knights, long bishops, long rooks, long queens, long kings,
+    public Board(long pawns, long knights, long bishops, long rooks, long queens, long kings,
           long white, long black,
           boolean turn, int epSquare, long castlingRights) {
 

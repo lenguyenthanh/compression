@@ -3,12 +3,12 @@ package org.lichess.compression.game;
 import java.util.Arrays;
 import java.util.function.Predicate;
 
-final class MoveList {
+public final class MoveList {
     // A move list that reuses a pool of moves, never allocating new objects.
     // This is somewhat dangerous: Care must be taken that the list is not
     // modified while external code still holds references.
-    private final Move buffer[];
-    private int size = 0;
+    public final Move buffer[];
+    public int size = 0;
 
     public MoveList() {
         this(256);
@@ -80,7 +80,7 @@ final class MoveList {
         }
     }
 
-    private void swapRemove(int i) {
+    public void swapRemove(int i) {
         // Removes a move by swapping the last move into its place.
         // For i != j buffer[i] and buffer[j] should never point to the same
         // object!

@@ -1,6 +1,6 @@
 package org.lichess.compression.game;
 
-final class Move implements Comparable<Move> {
+public final class Move implements Comparable<Move> {
     public static final int NORMAL = 0;
     public static final int EN_PASSANT = 1;
     public static final int CASTLING = 2;
@@ -14,7 +14,7 @@ final class Move implements Comparable<Move> {
 
     private int score;
 
-    void set(Board board, int type, Role role, int from, boolean capture, int to, Role promotion) {
+    public void set(Board board, int type, Role role, int from, boolean capture, int to, Role promotion) {
         // Overwrite the current move. This is like a constructor, but reuses
         // an existing object.
 

@@ -14,17 +14,17 @@ import org.lichess.compression.BitReader;
 import org.lichess.compression.BitWriter;
 
 public class Encoder {
-    private static final ThreadLocal<MoveList> moveList = new ThreadLocal<MoveList>() {
+    public static final ThreadLocal<MoveList> moveList = new ThreadLocal<MoveList>() {
         @Override
         protected MoveList initialValue() {
             return new MoveList();
         }
     };
 
-    private static Pattern SAN_PATTERN = Pattern.compile(
+    public static Pattern SAN_PATTERN = Pattern.compile(
         "([NBKRQ])?([a-h])?([1-8])?x?([a-h][1-8])(?:=([NBRQK]))?[\\+#]?");
 
-    private static Role charToRole(char c) {
+    public static Role charToRole(char c) {
         switch (c) {
             case 'N': return Role.KNIGHT;
             case 'B': return Role.BISHOP;
@@ -165,7 +165,7 @@ public class Encoder {
             lastUci);
     }
 
-    private static String san(Move move, MoveList legals) {
+    public static String san(Move move, MoveList legals) {
         switch (move.type) {
             case Move.NORMAL:
             case Move.EN_PASSANT:
@@ -218,7 +218,7 @@ public class Encoder {
         return "--";
     }
 
-    private static void setHash(byte buffer[], int ply, int hash) {
+    public static void setHash(byte buffer[], int ply, int hash) {
         // The hash for the starting position (ply = -1) goes last. The most
         // recent position goes first.
         int base = buffer.length - 3 * (ply + 1 + 1);
