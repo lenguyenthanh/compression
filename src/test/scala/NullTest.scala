@@ -13,8 +13,7 @@ class NullTest extends Specification:
 //      pgnMoves must_== decoded.pgnMoves
 //    }
 
-    "slidingAttacks" in {
-      val result = Bitboard.slidingAttacks(10, Bitboard.ALL, Bitboard.WHITE_PAWN_DELTAS)
-      result must_=== 0xa0000L
-    }
-
+  "slidingAttacks" in {
+    val result = Bitboard.slidingAttacks(10, Bitboard.ALL, Bitboard.WHITE_PAWN_DELTAS)
+    result must_=== 0xa0000L
+  }
