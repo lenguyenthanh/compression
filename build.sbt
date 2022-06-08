@@ -4,7 +4,7 @@ name         := "compression"
 organization := "org.lichess"
 version      := "1.7"
 resolvers += "lila-maven" at "https://raw.githubusercontent.com/ornicar/lila-maven/master"
-libraryDependencies += "org.specs2" %% "specs2-core" % "4.15.0" % Test
+libraryDependencies += "org.specs2" %% "specs2-core" % "5.0.0" % Test
 scalacOptions := Seq(
   "-encoding",
   "utf-8",
